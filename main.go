@@ -1,10 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
+
+type Request struct {
+	URL string `json:"url" binding:"required"`
+}
 
 func main() {
 	router := gin.Default()
@@ -14,15 +19,35 @@ func main() {
 			"message": "pong",
 		})
 	})
+
 	router.POST("/scraping", func(c *gin.Context) {
-		message := c.PostForm("message")
-		nick := c.DefaultPostForm("nick", "anonymous")
+
+		var request Request
+
+		if err := c.ShouldBindJSON(&request); err != nil {
+			return
+		}
+
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+
+		url := request.URL
+
+		fmt.Println("URL is ", url)
 
 		c.JSON(http.StatusOK, gin.H{
-			"status":  "posted",
-			"message": message,
-			"nick":    nick,
+			"status": "posted",
+			"url":    url,
 		})
 	})
+
+	router.OPTIONS("/scraping", func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		c.AbortWithStatus(http.StatusOK)
+	})
+
 	router.Run() // listen and serve on 0.0.0.0:8080
 }
