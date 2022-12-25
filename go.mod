@@ -1,4 +1,4 @@
-module github.com/yihsuanhung/web-scraping
+module github.com/yihsuanhung/web-crawling
 
 go 1.19
 

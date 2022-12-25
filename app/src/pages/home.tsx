@@ -4,7 +4,7 @@ import axios from "axios";
 const SERVER_URL = "http://127.0.0.1:8080";
 
 const postReq = async (url: string) => {
-  const response = await axios.post(`${SERVER_URL}/scraping`, {
+  const response = await axios.post(`${SERVER_URL}/crawling`, {
     url,
   });
   console.log("url", url, response);

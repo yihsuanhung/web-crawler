@@ -19,7 +19,7 @@ func main() {
 		})
 	})
 
-	router.POST("/scraping", func(c *gin.Context) {
+	router.POST("/crawling", func(c *gin.Context) {
 
 		var request Request
 
@@ -42,7 +42,7 @@ func main() {
 		})
 	})
 
-	router.OPTIONS("/scraping", func(c *gin.Context) {
+	router.OPTIONS("/crawling", func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
