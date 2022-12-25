@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -25,6 +24,9 @@ func main() {
 		var request Request
 
 		if err := c.ShouldBindJSON(&request); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "ERROR",
+			})
 			return
 		}
 
@@ -33,8 +35,6 @@ func main() {
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 
 		url := request.URL
-
-		fmt.Println("URL is ", url)
 
 		c.JSON(http.StatusOK, gin.H{
 			"status": "posted",
