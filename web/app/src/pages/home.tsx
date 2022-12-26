@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const SERVER_URL = "http://127.0.0.1:8080";
+const SERVER_URL = "http://127.0.0.1:8090/v1";
 
 const postReq = async (url: string) => {
   const response = await axios.post(`${SERVER_URL}/crawl`, {
     url,
   });
   console.log("url", url, response);
+};
+
+const getReq = async () => {
+  const response = await axios.get(`${SERVER_URL}/hello`);
+  console.log(response);
 };
 
 export const Home = () => {
@@ -25,6 +30,7 @@ export const Home = () => {
           style={{ margin: "6px" }}
           onClick={() => {
             postReq(url);
+            // getReq();
           }}
         >
           建立爬蟲任務
