@@ -11,6 +11,7 @@ func main() {
 	v1 := instance.Group("v1")
 	v1.GET("/hello", handler.Hello)
 	v1.POST("/crawl", handler.Crawl)
+	v1.OPTIONS("/crawl", handler.Preflight)
 	if err := instance.Serve(); err != nil {
 		panic(err)
 	}
