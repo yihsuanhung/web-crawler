@@ -1,10 +1,10 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yihsuanhung/web-crawler/pkg/crawler"
 )
 
 type Request struct {
@@ -38,7 +38,9 @@ func Crawl(c *gin.Context) {
 	}
 
 	url := request.URL
-	fmt.Println("網址", url)
+
+	crawler.Parse(url)
+
 	// TODO enqueue pkg/taskQueue (body)
 	// TODO error handle => response reject
 	// TODO response accept
