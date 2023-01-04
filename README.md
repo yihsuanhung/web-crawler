@@ -4,7 +4,7 @@
 
 # Client
 
-前端TypeScript所撰寫，使用者可以在畫面上輸入URL已建立一個建立爬蟲，系統會返回一個ID，使用者隨時可以使用此ID查詢任務的狀態
+前端由 TypeScript/React 所撰寫，使用者可以在畫面上輸入URL已建立一個建立爬蟲，系統會返回一個ID，使用者隨時可以使用此ID查詢任務的狀態
 
 ![Screenshot 2023-01-04 at 8 32 41 PM](https://user-images.githubusercontent.com/58166555/210576103-5d05fc47-ce2f-48d5-b9a8-21776eb46941.png)
 
