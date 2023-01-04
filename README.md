@@ -13,17 +13,17 @@
 
 # Server
 
-後端Go所撰寫，包含以下幾個服務
+後端由 Go 所撰寫，包含以下幾個服務
 
 - HTTP Service — 負責處理 HTTP請求與回應
 - Job Producer — 負責爬蟲任務的前處理
 - Job Queue — 負責緩存爬蟲任務，提供系統能處理大量請求的彈性
-- Job Comsumer — 負責非同步執行爬蟲任務，與資料後處理
+- Job Comsumer — 負責執行緩存中的爬蟲任務，與資料後處理
 - Crawler — 負責實際執行爬蟲
 
-## 建立爬蟲任務的執行流程
+建立爬蟲任務的執行流程
 
-![Screenshot 2023-01-04 at 10 26 06 PM](https://user-images.githubusercontent.com/58166555/210577314-2fd0c1a4-487e-4281-9e80-dbf2d546fbe7.png)
+![Screenshot 2023-01-04 at 10 26 06 PM](https://user-images.githubusercontent.com/58166555/210578579-c9ca743b-99ce-4e5a-af02-cce75ee77256.png)
 
 
 1. 前端在畫面中輸入 URL，按下送出後，向後端發出一個請求。
@@ -34,9 +34,9 @@
 6. Job Queue 為一個 queue，只要長度不為 0，Job Queue 就會把 queue 中最前面的任務交給 Job Consumer 執行。
 7. Consumer 會非同步的調用 Crawler 執行爬蟲任務，爬蟲結束後，會把結果存到資料庫中，使用同一個 ID 複寫掉 Result 的欄位。
 
-## 查詢爬蟲結果的流程
+查詢爬蟲結果的流程
 
-![Screenshot 2023-01-04 at 10 28 19 PM](https://user-images.githubusercontent.com/58166555/210577383-65d1d9ef-b7a5-4c69-baf3-c0aa410068d3.png)
+![Screenshot 2023-01-04 at 10 28 19 PM](https://user-images.githubusercontent.com/58166555/210578606-2135d605-5354-4ee7-9780-5ee279d0856d.png)
 
 
 1. 前端在畫面中輸入任務 ID，按下送出後，向後端發出一個請求。
@@ -61,14 +61,8 @@
 - 使用 Go channel 實作
 - 內部包含一個 queue，儲存完整的任務
 - 當 queue 長度不為 0 時，要能夠把任務交由 Job Consumer 處理
-
-API
-
-- Enqueue — 外部將任務加入 queue 的方法
-
-Scale
-
-- 使用分散式 Message Queue 服務應該是最好的 Scale 方法
+- API：
+    - Enqueue — 外部將任務加入 queue 的方法
 
 ### Job Consumer
 
@@ -77,18 +71,12 @@ Scale
 - 能夠呼叫 Crawler 的 Parse API 以執行爬蟲任務
 - 需要與資料庫連線，用於儲存任務時
 
-Scale
-
-- 建立一個 Goroutine pool，設定 Goroutine 數量的上下限，能夠動態調配執行任務的 Goroutine
-
 ### Crawler
 
 - 使用 Colly 套件
 - 返回爬蟲後的結果
-
-API
-
-- Parse — 外部調用爬蟲功能
+- API
+    - Parse — 外部調用爬蟲功能
 
 # 容錯機制
 
@@ -107,7 +95,11 @@ API
 - 若 Consumer 執行到一半壞了怎麼辦？
     - 設計重試機制，當 Consumer 執行到一半壞了，直接重新開始執行
     - 可以採用事件驅動的架構來處理，例如當某個 consumer 執行失敗時，發送事件給系統，請系統來決定該任務如何繼續
-    
+
+# 擴展性
+
+- 使用分散式 Message Queue 服務，來 scale message queue 的處理與容錯
+- 建立一個 Goroutine pool，設定 Goroutine 數量的上下限，能夠動態調配執行任務的 Goroutine
 
 # 部署
 
