@@ -1,40 +1,35 @@
 package main
 
 import (
-	"fmt"
-
+	"github.com/yihsuanhung/web-crawler/internal/db"
+	"github.com/yihsuanhung/web-crawler/internal/mock"
+	"github.com/yihsuanhung/web-crawler/pkg/crawler"
 	"github.com/yihsuanhung/web-crawler/pkg/handler"
 	"github.com/yihsuanhung/web-crawler/pkg/server"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
 )
 
 func main() {
 
-	dsn := "root:root@tcp(127.0.0.1:3306)/crawler"
-	_, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	// init the db instance
+	db.Init()
 
-	if err != nil {
-		panic("failed to connect database")
-	}
+	// [DEV] init mock db instance
+	mock.InitDB()
 
-	fmt.Println("db is connected")
+	// init the crawler job queue
+	crawler.Init()
 
+	// set up routes
 	config := server.DefaultConfig()
 	instance := config.Build()
 	v1 := instance.Group("v1")
 	v1.GET("/hello", handler.Hello)
 	v1.POST("/crawl", handler.Crawl)
 	v1.OPTIONS("/crawl", handler.Preflight)
+	v1.POST("/status", handler.Status)
+	v1.OPTIONS("/status", handler.Preflight)
 	if err := instance.Serve(); err != nil {
 		panic(err)
 	}
 
-	// 建立 gorm.DB 物件
-
-	// db, err := database.ConnectDB()
-	// if err != nil {
-	// 	panic("failed to connect database")
-	// }
-	// defer db.DB().Close()
 }
