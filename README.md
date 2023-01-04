@@ -112,4 +112,4 @@ cd cmd/web_crawler && go run main.go
 
 # 部署
 
-前端與後端服務都已經寫好 Dockerfile，夠確保順利 build 出能夠執行的 image，且我也寫了一份 docker-compose.yaml，所以部署時只需要再跑一次 docker build ，建立好 image 後在目標機器上使用 docker-compose up 就可以啟用服務了。
+前端與後端服務都已經寫好 Dockerfile，且也寫了一份 docker-compose.yaml，所以部署時只需要再跑一次 docker build ，建立好 image 後在目標機器上使用 docker-compose up 就可以啟用服務了。
