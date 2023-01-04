@@ -1,0 +1,27 @@
+version: "3.2"
+
+services:
+  db:
+    image: amd64/mysql:8.0.29-debian
+    container_name: appsDB
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "crawler"
+  app:
+    image: yihsuanhung/web-crawler:0.0.1
+    container_name: web-crawler-server
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "db"
+  # command: ["./wait-for.sh", "appsDB:6603", "-t", "30", "--", "./web_crawler"]
+# frontend:
+#   image: web-crawler:0.0.1
+#   container_name: web-crawler-server
+#   restart: always
+#   ports:
+#     - "3000:3000"
