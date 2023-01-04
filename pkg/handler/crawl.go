@@ -45,25 +45,16 @@ func Crawl(c *gin.Context) {
 
 	// [Preprocess] add job to db
 	mock.DB[taskId] = job
-
 	fmt.Println("新增任務", *job)
-
-	// [Preprocess] enqueue
-	crawler.Enq(job)
 
 	// TODO error handle => response reject
 
-	// c.JSON(200, "Hellov1")
 	c.JSON(http.StatusOK, gin.H{
 		"status": "OK",
 		"url":    url,
 		"taskId": taskId,
 	})
 
+	// [Preprocess] enqueue
+	crawler.Enq(job)
 }
-
-// method 1 一條龍 ⭐️
-// TODO extract request body form post context
-// TODO call pkg/crawler (body)
-// TODO error handle => response reject
-// TODO response accept

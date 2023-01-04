@@ -11,9 +11,7 @@ func Parse(url string) string {
 	fmt.Println("parsing... ", url)
 
 	// Instantiate default collector
-	c := colly.NewCollector(
-	// colly.AllowedDomains("developer.mozilla.org"),
-	)
+	c := colly.NewCollector()
 
 	var data string
 
@@ -26,5 +24,6 @@ func Parse(url string) string {
 	})
 
 	c.Visit(url)
+
 	return data
 }
