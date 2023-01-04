@@ -6,19 +6,19 @@ import (
 	"github.com/gocolly/colly"
 )
 
-func Parse(url string) {
+func Parse(url string) string {
 
 	fmt.Println("parsing... ", url)
 
 	// Instantiate default collector
 	c := colly.NewCollector(
-		colly.AllowedDomains("developer.mozilla.org"),
+	// colly.AllowedDomains("developer.mozilla.org"),
 	)
 
-	// var wg sync.WaitGroup
+	var data string
 
 	c.OnHTML("html", func(e *colly.HTMLElement) {
-		fmt.Println(e.Text)
+		data += e.Text
 	})
 
 	c.OnRequest(func(r *colly.Request) {
@@ -26,5 +26,5 @@ func Parse(url string) {
 	})
 
 	c.Visit(url)
-
+	return data
 }
