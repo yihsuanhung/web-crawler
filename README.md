@@ -23,7 +23,7 @@
 
 ## 建立爬蟲任務的執行流程
 
-![Screenshot 2023-01-04 at 10 28 19 PM](https://user-images.githubusercontent.com/58166555/210576905-5f33c412-02f9-487e-8ea3-83d9a8592d91.png)
+![Screenshot 2023-01-04 at 10 26 06 PM](https://user-images.githubusercontent.com/58166555/210577314-2fd0c1a4-487e-4281-9e80-dbf2d546fbe7.png)
 
 
 1. 前端在畫面中輸入 URL，按下送出後，向後端發出一個請求。
@@ -36,7 +36,7 @@
 
 ## 查詢爬蟲結果的流程
 
-![Screenshot 2023-01-04 at 10 26 16 PM](https://user-images.githubusercontent.com/58166555/210576484-b06eced8-8906-4787-827e-fa46db2762b0.png)
+![Screenshot 2023-01-04 at 10 28 19 PM](https://user-images.githubusercontent.com/58166555/210577383-65d1d9ef-b7a5-4c69-baf3-c0aa410068d3.png)
 
 
 1. 前端在畫面中輸入任務 ID，按下送出後，向後端發出一個請求。
