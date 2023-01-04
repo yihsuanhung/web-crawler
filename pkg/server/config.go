@@ -16,8 +16,8 @@ type Config struct {
 // Default Config
 func DefaultConfig() *Config {
 	return &Config{
-		Host: "127.0.0.1",
-		Port: 8090,
+		Host: "0.0.0.0",
+		Port: 8080,
 		Mode: gin.ReleaseMode,
 	}
 }
