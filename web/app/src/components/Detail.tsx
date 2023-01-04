@@ -10,13 +10,24 @@ type Data = {
 export const Detail = () => {
   const [taskId, setTaskId] = useState("");
   const [result, setResult] = useState("");
+  const [status, setStatus] = useState("");
 
   const sendRequest = async (id: string) => {
-    const response = await axios.post<Data>(`${SERVER_URL}/status`, {
-      id,
-    });
-    console.log("response", response);
-    setResult(response.data.data);
+    try {
+      const response = await axios.post<Data>(`${SERVER_URL}/status`, {
+        id,
+      });
+
+      console.log("response", response);
+      setResult(response.data.data);
+      setStatus(response.statusText);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        setStatus(error.message);
+      }
+      console.error(error);
+    }
   };
 
   return (
@@ -35,6 +46,7 @@ export const Detail = () => {
           <button onClick={() => setTaskId("")}>重置ID</button>
         </div>
       </div>
+      {status === "" ? null : status === "OK" ? <>成功</> : <>{status}</>}
       {result !== "" && (
         <div style={{ maxWidth: "60vh", maxHeight: "40vh", overflow: "auto" }}>
           {result}

@@ -31,9 +31,6 @@ func Status(c *gin.Context) {
 	id := request.ID
 
 	if data, ok := mock.DB[id]; ok {
-		fmt.Println(*data)
-
-		// json.Unmarshal()
 
 		d, err := json.Marshal(data.Result)
 
@@ -48,8 +45,8 @@ func Status(c *gin.Context) {
 
 	} else {
 		fmt.Println("找不到id")
-		c.JSON(http.StatusOK, gin.H{
-			"status": "Not Found",
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": "ID is not found",
 		})
 	}
 
