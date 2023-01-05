@@ -34,7 +34,7 @@ cd cmd/web_crawler && go run main.go
 
 建立爬蟲任務的執行流程
 
-![Screenshot 2023-01-04 at 10 26 06 PM](https://user-images.githubusercontent.com/58166555/210578579-c9ca743b-99ce-4e5a-af02-cce75ee77256.png)
+![Page 2 (2)](https://user-images.githubusercontent.com/58166555/210790475-aedfa27a-a04f-4c1b-a506-52058d2e7b0e.png)
 
 1. 前端在畫面中輸入 URL，按下送出後，向後端發出一個請求。
 2. 後端由 HTTP Service 接收到請求後，解析請求中的 URL，接著交由 Job Producer 處理。
@@ -46,7 +46,7 @@ cd cmd/web_crawler && go run main.go
 
 查詢爬蟲結果的流程
 
-![Screenshot 2023-01-04 at 10 28 19 PM](https://user-images.githubusercontent.com/58166555/210578606-2135d605-5354-4ee7-9780-5ee279d0856d.png)
+![Page 2 (3)](https://user-images.githubusercontent.com/58166555/210790716-33de3236-e0e0-463f-96cf-a851ee066e04.png)
 
 1. 前端在畫面中輸入任務 ID，按下送出後，向後端發出一個請求。
 2. 後端使用此 ID 在資料庫中查找任務，若找到結果，回傳給前端。
