@@ -93,27 +93,27 @@ cd cmd/web_crawler && go run main.go
 為了增強系統的容錯機制與擴充性，可以進行以下調整
 
 - Job Queue 能夠跟所有 Consumers 溝通，並且自己維護一些狀態，包含：
-  - Consumer 的執行狀態，例如成功、失敗、執行中
-  - 任務與 Consumer 的對應關係，例如 A 任務由 ID 為 123 的 Consumer 執行
-- Job Queue 設定一個 time out，當 Consmer 執行超時，派定為失敗
+  - Consumer 的執行狀態，例如成功、失敗、執行中。
+  - 任務與 Consumer 的對應關係，例如 A 任務由 ID 為 123 的 Consumer 執行。
+- Job Queue 設定一個 time out，當 Consmer 執行超時，派定為失敗。
 - Job Queue 設計每隔固定時間，例如 5 秒，發請求詢問執行中的 Consumer 狀態的功能。類似 ELK 的 Heartbeat，如果 Consumer 回覆執行中，就繼續等待任務處理完成，如果 Consumer 回傳失敗，或是 time out，即可判定任務失敗，該任務重新執行或重新排隊。
-- Job Queue 只會在 Consumer 回傳任務成功時，才會真的把任務從 queue 內 pop 掉
-- Job Queue 只會在確定任務成功，才更新資料庫內的任務狀態
+- Job Queue 只會在 Consumer 回傳任務成功時，才會真的把任務從 queue 內 pop 掉。
+- Job Queue 只會在確定任務成功，才更新資料庫內的任務狀態。
 
 能夠解決或應付以下問題：
 
 - 若 Consumer 壞了，執行到一半的任務怎麼辦？
-  - 由於 Job Queue 只會在 Consumer 回傳成功時才把任務從 queue 中 pop 掉，所以當 Consumer 壞掉時，任務還在 queue 內等待，不會寫入 db 也不會影響結果正確性
-  - Job Queue 會有固定排程與所有 Consumer 溝通，當 Job Queue 檢查到某個 Consumer 壞掉時，只要把該任務重新排隊等待執行即可
-  - 另外也可以採用事件驅動的軟體設計，當 Consumer 失敗時，發送事件給系統，交由系統處理失敗任務的後續行為
+  - 由於 Job Queue 只會在 Consumer 回傳成功時才把任務從 queue 中 pop 掉，所以當 Consumer 壞掉時，任務還在 queue 內等待，不會寫入 db 也不會影響結果正確性。
+  - Job Queue 會有固定排程與所有 Consumer 溝通，當 Job Queue 檢查到某個 Consumer 壞掉時，只要把該任務重新排隊等待執行即可。
+  - 另外也可以採用事件驅動的軟體設計，當 Consumer 失敗時，發送事件給系統，交由系統處理失敗任務的後續行為。
 - 若 Queue 壞了，排隊中的任務如何回復？
-  - Queue 壞了重啟之後，走訪一遍所有的 Consumer ，檢查 Consumer 狀態，把 Consumer 正在執行中的任務重新 enqueue 即可
-  - 若很擔心 Queue 的備份，可以寫一個排程服務，定期備份 queue 的狀態
+  - Queue 壞了重啟之後，走訪一遍所有的 Consumer ，檢查 Consumer 狀態，把 Consumer 正在執行中的任務重新 enqueue 即可。
+  - 若很擔心 Queue 的備份，可以寫一個排程服務，定期備份 queue 的狀態。
 - 若任務執行失敗，Queue 內需要怎麼處理任務？
-  - 當 Consumer 回傳給 Queue 任務執行失敗時，可以把任務重新排列到 queue 最後重新等待執行
+  - 當 Consumer 回傳給 Queue 任務執行失敗時，可以把任務重新排列到 queue 最後重新等待執行。
 - 若 Consumer 需要執行很久，要如何判斷結果？
-  - Heartbeat 的設計能夠確保 Consumer 的執行正確性，若 Job Queue 定時傳送 heartbeat 給 consumer，且 consumer 都有回傳正確，就讓 Consumer 繼續執行任務，直到失敗或 Time out
+  - Heartbeat 的設計能夠確保 Consumer 的執行正確性，若 Job Queue 定時傳送 heartbeat 給 consumer，且 consumer 都有回傳正確，就讓 Consumer 繼續執行任務，直到失敗或 Time out。
 
 # 部署
 
-前端與後端服務都已經寫好 Dockerfile，方便部署前建立 image。可以使用 Gitlab 或 Github action 將 image 部署至目標機器上。
+前端與後端服務都已經寫了 Dockerfile，方便部署前建立 image。可以使用 Gitlab 或 Github action 將 image 部署至目標機器上。
