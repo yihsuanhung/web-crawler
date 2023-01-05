@@ -116,4 +116,4 @@ cd cmd/web_crawler && go run main.go
 
 # 部署
 
-前端與後端服務都已經寫了 Dockerfile，方便部署前建立 image。可以使用 Gitlab 或 Github action 將 image 部署至目標機器上。
+前端與後端服務都已經寫了 Dockerfile，方便部署前建立 image，其中後端採用 multi-stage build 以最小化 image size。可以使用 Gitlab 或 Github action 將 image 部署至目標機器上。
